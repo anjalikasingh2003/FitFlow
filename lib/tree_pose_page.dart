@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'dart:io';
 
 class TreePosePage extends StatelessWidget {
@@ -14,7 +13,7 @@ class TreePosePage extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
             // Display the image
-            Image.asset('assets/img_tree_pose.jpg'), // Ensure the path is correct
+            Image.asset('assets/img_tree_pose.png'), // Ensure the path is correct
 
             SizedBox(height: 20), // Space between image and button
 
@@ -33,13 +32,20 @@ class TreePosePage extends StatelessWidget {
 
   // Function to run the Tree_pose.py script
   void _runTreePoseScript() async {
-    // Make sure the path to the script is correct
-    Process.run('python', ['yoga_poses/Tree_pose.py']).then((result) {
+    try {
+      // Make sure the path to the script is correct
+      var result = await Process.run('python', ['yoga_poses/Tree_pose.py']);
+      
       // Handle the output of the script
       print(result.stdout);
       print(result.stderr);
-    }).catchError((e) {
+
+      if (result.exitCode != 0) {
+        // If the script didn't run successfully, print the error
+        print('Error running script: ${result.stderr}');
+      }
+    } catch (e) {
       print('Error running script: $e');
-    });
+    }
   }
 }
