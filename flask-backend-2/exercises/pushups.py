@@ -17,7 +17,7 @@ video_file = None
 
 # Initializing variables and capturing video
 root = Tk()
-root.title("SQUAT COUNTER")
+root.title("PUSHUP COUNTER")
 root.geometry('500x400+268+82')
 root.configure(bg="#000000")  # Set background color to black
 
@@ -25,7 +25,7 @@ root.configure(bg="#000000")  # Set background color to black
 f1 = LabelFrame(root, bg="#000000")  # Change label frame background to black
 f1.place(relx=0.5, rely=0.5)
 
-label = Label(root, text="Squat Count: 0", font=("Arial", 24, "bold"), bg="#000000", fg="#FFFFFF")  # Update label colors
+label = Label(root, text="Pushup Count: 0", font=("Arial", 24, "bold"), bg="#000000", fg="#FFFFFF")  # Update label colors
 label.pack(pady=10)
 
 # Creating a label for displaying video
@@ -44,15 +44,13 @@ pose = md_pose.Pose(
     min_tracking_confidence=0.7
 )
 
-def update_squat():
+def update_pushup():
     global count
-    label.config(text=f"SQUAT: {count}")
-    if count >= 10:  # You can change the limit if needed
-        close()
-    else:
-        label.after(1000, update_squat)
+    label.config(text=f"PUSHUP: {count}")
+   
+    label.after(1000, update_pushup)
 
-# Function to update the squat count every second
+# Function to update the pushup count every second
 def process_frame():
     global position, count
 
@@ -78,7 +76,7 @@ def process_frame():
             imlist.append([id, X, Y])
 
     if len(imlist) != 0:
-        # Squat detection logic
+        # Pushup detection logic
         if imlist[11][2] >= imlist[23][2] and imlist[12][2] >= imlist[24][2]:  # Down position
             position = "down"
         if position == "down" and imlist[11][2] < imlist[23][2] and imlist[12][2] < imlist[24][2]:  # Up position
@@ -92,10 +90,10 @@ def process_frame():
 
     root.after(1, process_frame)
 
-update_squat()
+update_pushup()
 process_frame()
 
-# Updating the squat count and processing video frames
+# Updating the pushup count and processing video frames
 root.mainloop()
 
 cap.release()

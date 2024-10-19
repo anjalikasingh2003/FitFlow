@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'tree_pose_page.dart'; // Import the tree pose page
-import 'triangle_page.dart'; // Import the triangle pose page
+import 'triangle_pose.dart'; // Import the triangle pose page
 import 'plank_page.dart'; // Import the plank page
 
 class YogaPage extends StatelessWidget {

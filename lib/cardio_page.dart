@@ -14,7 +14,7 @@ class _CardioPageState extends State<CardioPage> {
   bool isCameraInitialized = false;
 
   // Video IDs
-  final List<String> videoIds = ["auBLPXO8Fww", "XPU9K9QM7ME","L8fvypPrzzs", "S7HEm-fd534"]; // Add your video IDs here
+  final List<String> videoIds = ["XPU9K9QM7ME", "auBLPXO8Fww", "L8fvypPrzzs", "S7HEm-fd534"]; // Add your video IDs here
   int currentVideoIndex = 0;
 
   @override 
