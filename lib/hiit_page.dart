@@ -1,45 +1,38 @@
+
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:http/http.dart' as http;
+
 
 class HIITPage extends StatefulWidget {
-  @override
-  _HIITPageState createState() => _HIITPageState();
-}
+   @override
+   _HIITPageState createState() => _HIITPageState();
+ }
+
 
 class _HIITPageState extends State<HIITPage> {
   final _controller = YoutubePlayerController();
-  List<CameraDescription> cameras = [];
-  CameraController? cameraController;
-  bool isCameraInitialized = false;
 
   // Video IDs
-  final List<String> videoIds = ["XPU9K9QM7ME","VtOYc6j5c", "vUnqwqqI", "op9kVnSso6Q", "hHdD5Ksdnmk", "_l3ySVKYVJ8"]; // Add your video IDs here
+  final List<String> videoIds = ["XPU9K9QM7ME","VtOYc6j5c", "vUnqwqqI", "op9kVnSso6Q", "hHdD5Ksdnmk", "_l3ySVKYVJ8"];;
   int currentVideoIndex = 0;
 
-  @override 
-  void initState() { 
-    super.initState(); 
+  @override
+  void initState() {
+    super.initState();
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
-    _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    cameraController = CameraController(cameras[0], ResolutionPreset.medium);
-    await cameraController?.initialize();
-    setState(() {
-      isCameraInitialized = true;
-    });
-  }
+  void _startVideo() async {
+    // Start the video first
+    _controller.playVideo();
 
-  void _startVideo() {
-    _controller.playVideo();  // Use playVideo instead of play
-   // _controller.setLoop(true); // Set the video to loop
+    // Then send the request to start the workout
+    await _sendStartWorkoutRequest();
   }
 
   void _stopVideo() {
-    _controller.pauseVideo();  // Use pauseVideo instead of pause
+    _controller.pauseVideo();
   }
 
   void _nextVideo() {
@@ -47,9 +40,10 @@ class _HIITPageState extends State<HIITPage> {
       currentVideoIndex++;
     } else {
       _showWorkoutCompletedDialog();
+      return; // Prevent loading the next video if workout is completed
     }
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
-    _startVideo(); // Automatically start the next video
+    // Don't start the video immediately here, wait for user to press start
   }
 
   void _showWorkoutCompletedDialog() {
@@ -63,7 +57,7 @@ class _HIITPageState extends State<HIITPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // This will pop the dialog
-                Navigator.pop(context); // This will pop the StrengthTrainingPage and go back
+                Navigator.pop(context); // This will pop the CardioPage and go back
               },
               child: Text('Okay'),
             ),
@@ -73,11 +67,32 @@ class _HIITPageState extends State<HIITPage> {
     );
   }
 
+  Future<void> _sendStartWorkoutRequest() async {
+    String url;
+    if (currentVideoIndex == 0) {
+      // For the first video (Pushups)
+      url = 'http://10.81.100.141:5002/jumpingjacks'; // Replace with your Flask URL for pushups
+    } else {
+      // For the subsequent videos (Squats)
+      url = 'http://10.81.100.141:5002/squats'; // Replace with your Flask URL for squats
+    }
 
+    try {
+      final response = await http.post(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Handle the response if needed
+        print('Workout started successfully: ${currentVideoIndex == 0 ? "Pushups" : "Squats"}');
+      } else {
+        // Handle the error
+        print('Failed to start workout: ${response.body}');
+      }
+    } catch (error) {
+      print('Error sending request: $error');
+    }
+  }
 
   @override
   void dispose() {
-    cameraController?.dispose();
     _controller.close();
     super.dispose();
   }
@@ -86,32 +101,19 @@ class _HIITPageState extends State<HIITPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('High intensity interval training Workouts'),
+        title: Text('High Interval Strength Training Workouts'),
       ),
       body: Center(
         child: Column(
           children: [
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 160,
-                    height: 120,
-                    child: isCameraInitialized
-                        ? CameraPreview(cameraController!)
-                        : Center(child: CircularProgressIndicator()),
-                  ),
-                  SizedBox(width: 20),
-                  Container(
-                    width: 300,
-                    height: 200,
-                    child: YoutubePlayer(
-                      controller: _controller,
-                      aspectRatio: 16 / 9,
-                    ),
-                  ),
-                ],
+              child: Container(
+                width: 300,
+                height: 200,
+                child: YoutubePlayer(
+                  controller: _controller,
+                  aspectRatio: 16 / 9,
+                ),
               ),
             ),
             SizedBox(height: 20),
@@ -141,3 +143,4 @@ class _HIITPageState extends State<HIITPage> {
     );
   }
 }
+
