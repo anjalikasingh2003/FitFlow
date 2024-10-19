@@ -1,5 +1,4 @@
 import 'dart:developer';
-
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -10,37 +9,93 @@ class ChatbotWidget extends StatefulWidget {
 }
 
 class _ChatbotWidgetState extends State<ChatbotWidget> {
-  final TextEditingController _heightController = TextEditingController();
-  final TextEditingController _weightController = TextEditingController();
-  final TextEditingController _goalController = TextEditingController();
-  String _response = "";
+  final TextEditingController _inputController = TextEditingController();
+  List<Map<String, String>> _messages = [];
+  String _stage = 'goal'; // Track the current stage (goal, height, weight)
+  String? _goal, _height, _weight;
 
   Future<void> _sendData() async {
-    final height = _heightController.text;
-    final weight = _weightController.text;
-    final goal = _goalController.text;
+    final input = _inputController.text;
 
-    log("check");
-
-    final response = await http.post(
-      Uri.parse('http://127.0.0.1:5000/chatbot'), // Your Flask API URL
-      headers: {'Content-Type': 'application/json'},
-      body: json.encode({
-        'height': height,
-        'weight': weight,
-        'query': goal,
-      }),
-    );
-
-    if (response.statusCode == 200) {
+    // Handle conversation stages
+    if (_stage == 'goal') {
       setState(() {
-        _response = json.decode(response.body)['plan'].toString();
+        _messages.add({'sender': 'user', 'text': input});
+        _goal = input;
       });
-    } else {
+
+      await _showTypingIndicator();
       setState(() {
-        _response = "Error: ${response.statusCode}";
+        _messages.add({'sender': 'bot', 'text': 'What is your height (cm)?'});
       });
+      _stage = 'height';
+    } else if (_stage == 'height') {
+      setState(() {
+        _messages.add({'sender': 'user', 'text': 'Height: $input cm'});
+        _height = input;
+      });
+
+      await _showTypingIndicator();
+      setState(() {
+        _messages.add({'sender': 'bot', 'text': 'What is your weight (kg)?'});
+      });
+      _stage = 'weight';
+    } else if (_stage == 'weight') {
+      setState(() {
+        _messages.add({'sender': 'user', 'text': 'Weight: $input kg'});
+        _weight = input;
+      });
+
+      await _showTypingIndicator();
+      setState(() {
+        _messages.add({'sender': 'bot', 'text': 'This is the plan I have generated.'});
+      });
+
+      // Send data to server after collecting all inputs
+      final response = await http.post(
+        Uri.parse('http://127.0.0.1:5000/chatbot'), // Your Flask API URL
+        headers: {'Content-Type': 'application/json'},
+        body: json.encode({
+          'height': _height,
+          'weight': _weight,
+          'query': _goal,
+        }),
+      );
+
+      if (response.statusCode == 200) {
+        await _showTypingIndicator();
+        final botResponse = json.decode(response.body)['plan'].toString();
+        setState(() {
+          _messages.add({'sender': 'bot', 'text': botResponse});
+        });
+      } else {
+        await _showTypingIndicator();
+        setState(() {
+          _messages.add({'sender': 'bot', 'text': "Error: ${response.statusCode}"});
+        });
+      }
+
+      _stage = 'goal'; // Reset the conversation for future use
     }
+
+    _inputController.clear(); // Clear input field after sending
+  }
+
+  // Show a "typing" indicator with 3 dots before displaying each bot message
+  Future<void> _showTypingIndicator() async {
+    setState(() {
+      _messages.add({'sender': 'bot', 'text': '...'});
+    });
+    await Future.delayed(Duration(seconds: 1)); // Simulate loading time
+    setState(() {
+      _messages.removeWhere((message) => message['text'] == '...'); // Remove "typing" indicator
+    });
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _messages.add({'sender': 'bot', 'text': 'Welcome! How may I help you?'}); // Initial bot message
   }
 
   @override
@@ -53,34 +108,48 @@ class _ChatbotWidgetState extends State<ChatbotWidget> {
       body: Padding(
         padding: const EdgeInsets.all(16.0),
         child: Column(
-          crossAxisAlignment: CrossAxisAlignment.stretch,
           children: [
-            TextField(
-              controller: _heightController,
-              decoration: InputDecoration(labelText: 'Height (cm)'),
-              keyboardType: TextInputType.number,
+            Expanded(
+              child: ListView.builder(
+                itemCount: _messages.length,
+                itemBuilder: (context, index) {
+                  final message = _messages[index];
+                  final isBot = message['sender'] == 'bot';
+                  return Container(
+                    margin: EdgeInsets.symmetric(vertical: 5),
+                    alignment: isBot ? Alignment.centerLeft : Alignment.centerRight,
+                    child: Container(
+                      padding: EdgeInsets.all(10),
+                      decoration: BoxDecoration(
+                        color: isBot ? Colors.grey[300] : Colors.blue[300],
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      child: Text(
+                        message['text']!,
+                        style: TextStyle(color: isBot ? Colors.black : Colors.white),
+                      ),
+                    ),
+                  );
+                },
+              ),
             ),
-            TextField(
-              controller: _weightController,
-              decoration: InputDecoration(labelText: 'Weight (kg)'),
-              keyboardType: TextInputType.number,
+            Row(
+              children: [
+                Expanded(
+                  child: TextField(
+                    controller: _inputController,
+                    decoration: InputDecoration(
+                      labelText: 'Type your response...',
+                      border: OutlineInputBorder(),
+                    ),
+                  ),
+                ),
+                IconButton(
+                  icon: Icon(Icons.send),
+                  onPressed: _sendData,
+                ),
+              ],
             ),
-            TextField(
-              controller: _goalController,
-              decoration: InputDecoration(labelText: 'Fitness Goal'),
-            ),
-            SizedBox(height: 20),
-            ElevatedButton(
-              onPressed: _sendData,
-              child: Text('Get Fitness Plan'),
-            ),
-            SizedBox(height: 20),
-            Text(
-              'Response:',
-              style: TextStyle(fontWeight: FontWeight.bold),
-            ),
-            SizedBox(height: 10),
-            Text(_response),
           ],
         ),
       ),
