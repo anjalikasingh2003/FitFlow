@@ -14,7 +14,7 @@ class _HIITPageState extends State<HIITPage> {
   final _controller = YoutubePlayerController();
 
   // Video IDs
-  final List<String> videoIds = ["XPU9K9QM7ME","VtOYc6j5c", "vUnqwqqI", "op9kVnSso6Q", "hHdD5Ksdnmk", "_l3ySVKYVJ8"];;
+  final List<String> videoIds = ["XPU9K9QM7ME","VtOYc6j5c", "vUnqwqqI", "op9kVnSso6Q", "hHdD5Ksdnmk", "_l3ySVKYVJ8"];
   int currentVideoIndex = 0;
 
   @override

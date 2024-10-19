@@ -17,21 +17,23 @@ class AuthGate extends StatelessWidget {
             providers: [
                 EmailAuthProvider(),
             ],
-             headerBuilder: (context, constraints, shrinkOffset) {
-             return Padding(
-               padding: const EdgeInsets.all(20),
-               child: AspectRatio(
-                 aspectRatio: 1,
-                 child: Image.asset('assets/profile.jpg'),
-               ),
-             );
-           },
+        //      headerBuilder: (context, constraints, shrinkOffset) {
+        //      return Padding(
+        //        padding: const EdgeInsets.all(20),
+        //        child: AspectRatio(
+        //          aspectRatio: 1,
+        //          child: Image.asset('assets/profile.jpg'),
+        //        ),
+        //      );
+        //    },
            subtitleBuilder: (context, action) {
              return Padding(
                padding: const EdgeInsets.symmetric(vertical: 8.0),
+              // child: Center(
                child: action == AuthAction.signIn
                    ? const Text('Welcome to FitFlow, please sign in!')
                    : const Text('Welcome to FitFlow, please sign up!'),
+              // ),
              );
            },
            footerBuilder: (context, action) {
@@ -60,3 +62,4 @@ class AuthGate extends StatelessWidget {
     );
   }
 }
+
