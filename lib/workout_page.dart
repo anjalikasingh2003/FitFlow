@@ -2,6 +2,7 @@ import 'package:fir_n_flow/strength_training.dart';
 import 'package:flutter/material.dart';
 import 'cardio_page.dart';
 import 'hiit_page.dart';
+import 'FullWorkoutPage.dart';
 
 class WorkoutPage extends StatelessWidget {
   @override
@@ -22,8 +23,12 @@ class WorkoutPage extends StatelessWidget {
             ElevatedButton(
               onPressed: () {
                 // Navigate to AI Assistant page (create this page later)
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => FullWorkoutPage()),
+                );
               },
-              child: Text('Get AI Workout Plan'),
+              child: Text('Full Body Workout'),
             ),
             SizedBox(height: 20),
             Text(
