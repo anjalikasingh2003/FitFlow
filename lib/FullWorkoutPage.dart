@@ -34,7 +34,7 @@ class _FullWorkoutPageState extends State<FullWorkoutPage> {
 Future<void> executeExercises() async {
   try {
     // Start Jumping Jacks
-    var response = await http.get(Uri.parse('http://10.81.100.141:5000/jumpingjacks'));
+    var response = await http.get(Uri.parse('http://10.81.100.141:5001/jumpingjacks'));
     if (response.statusCode == 200) {
       print("Jumping Jacks started: ${response.body}");
       // Wait for Jumping Jacks to complete
@@ -44,7 +44,7 @@ Future<void> executeExercises() async {
     }
 
     // Start Pushups
-    response = await http.get(Uri.parse('http://10.81.100.141:5000/pushups'));
+    response = await http.get(Uri.parse('http://10.81.100.141:5001/pushups'));
     if (response.statusCode == 200) {
       print("Pushups started: ${response.body}");
       // Optionally wait for Pushups to complete
@@ -54,7 +54,7 @@ Future<void> executeExercises() async {
     }
 
     // Start Squats
-    response = await http.get(Uri.parse('http://10.81.100.141:5000/squats'));
+    response = await http.get(Uri.parse('http://10.81.100.141:5001/squats'));
     if (response.statusCode == 200) {
       print("Squats started: ${response.body}");
       // Wait for Squats to complete

@@ -13,7 +13,6 @@ count = 0
 position = None
 
 cap = cv2.VideoCapture(0)
-video_file = None
 
 # Initializing variables and capturing video
 root = Tk()
@@ -23,7 +22,7 @@ root.configure(bg="#000000")  # Set background color to black
 
 # Creating the Tkinter window
 f1 = LabelFrame(root, bg="#000000")  # Change label frame background to black
-f1.place(relx=0.5, rely=0.5)
+f1.place(relx=0.5, rely=0.5, anchor='center')
 
 label = Label(root, text="Jumping Jack Count: 0", font=("Arial", 24, "bold"), bg="#000000", fg="#FFFFFF")  # Update label colors
 label.pack(pady=10)
@@ -36,7 +35,8 @@ def close():
     root.destroy()
 
 # Function to close the application
-Button(f1, text="Exit the Application", bg='#FFFFFF', fg='red', font=("Calibri", 14, "bold"), command=close).place(relx=0.5, rely=0.8, anchor="center")  # Center the exit button
+exit_button = Button(f1, text="Exit the Application", bg='#FFFFFF', fg='red', font=("Calibri", 14, "bold"), command=close)
+exit_button.place(relx=0.5, rely=0.9, anchor="center")  # Center the exit button towards the bottom of the frame
 
 # Initializing the Pose object for pose estimation
 pose = md_pose.Pose(
@@ -46,7 +46,7 @@ pose = md_pose.Pose(
 
 def update_jump():
     global count
-   
+    label.config(text=f"Jumping Jack Count: {count}")
     label.after(1000, update_jump)
 
 # Function to update the jumping jack count every second

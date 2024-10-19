@@ -1,7 +1,6 @@
-import 'package:fir_n_flow/workout_page.dart'; // Ensure this is the correct path for WorkoutPage
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:http/http.dart' as http;
 
 class StrengthtrainingPage extends StatefulWidget {
   @override
@@ -10,47 +9,38 @@ class StrengthtrainingPage extends StatefulWidget {
 
 class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
   final _controller = YoutubePlayerController();
-  List<CameraDescription> cameras = [];
-  CameraController? cameraController;
-  bool isCameraInitialized = false;
 
   // Video IDs
-  final List<String> videoIds = ["L8fvypPrzzs", "op9kVnSso6Q", "hHdD5Ksdnmk", "_l3ySVKYVJ8"];
+  final List<String> videoIds = ["_l3ySVKYVJ8", "C_VtOYc6j5c", "auBLPXO8Fww"];
   int currentVideoIndex = 0;
-  bool workoutCompleted = false;
 
   @override
   void initState() {
     super.initState();
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
-    _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    cameraController = CameraController(cameras[0], ResolutionPreset.medium);
-    await cameraController?.initialize();
-    setState(() {
-      isCameraInitialized = true;
-    });
-  }
+  void _startVideo() async {
+    // Start the video first
+    _controller.playVideo();
 
-  void _startVideo() {
-    _controller.playVideo(); // Use playVideo to start the video
+    // Then send the request to start the workout
+    await _sendStartWorkoutRequest();
   }
 
   void _stopVideo() {
-    _controller.pauseVideo(); // Use pauseVideo to stop the video
+    _controller.pauseVideo();
   }
 
   void _nextVideo() {
     if (currentVideoIndex < videoIds.length - 1) {
       currentVideoIndex++;
     } else {
-      workoutCompleted = true; // Set the flag to indicate workout completion
-      _showWorkoutCompletedDialog(); // Show workout completed dialog
+      _showWorkoutCompletedDialog();
+      return; // Prevent loading the next video if workout is completed
     }
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
+    // Don't start the video immediately here, wait for user to press start
   }
 
   void _showWorkoutCompletedDialog() {
@@ -64,7 +54,7 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // This will pop the dialog
-                Navigator.pop(context); // This will pop the StrengthTrainingPage and go back
+                Navigator.pop(context); // This will pop the CardioPage and go back
               },
               child: Text('Okay'),
             ),
@@ -74,9 +64,32 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
     );
   }
 
+  Future<void> _sendStartWorkoutRequest() async {
+    String url;
+    if (currentVideoIndex == 0) {
+      // For the first video (Pushups)
+      url = 'http://10.81.100.141:5002/pushups'; // Replace with your Flask URL for pushups
+    } else {
+      // For the subsequent videos (Squats)
+      url = 'http://10.81.100.141:5002/squats'; // Replace with your Flask URL for squats
+    }
+
+    try {
+      final response = await http.post(Uri.parse(url));
+      if (response.statusCode == 200) {
+        // Handle the response if needed
+        print('Workout started successfully: ${currentVideoIndex == 0 ? "Pushups" : "Squats"}');
+      } else {
+        // Handle the error
+        print('Failed to start workout: ${response.body}');
+      }
+    } catch (error) {
+      print('Error sending request: $error');
+    }
+  }
+
   @override
   void dispose() {
-    cameraController?.dispose();
     _controller.close();
     super.dispose();
   }
@@ -91,26 +104,13 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
         child: Column(
           children: [
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 160,
-                    height: 120,
-                    child: isCameraInitialized
-                        ? CameraPreview(cameraController!)
-                        : Center(child: CircularProgressIndicator()),
-                  ),
-                  SizedBox(width: 20),
-                  Container(
-                    width: 300,
-                    height: 200,
-                    child: YoutubePlayer(
-                      controller: _controller,
-                      aspectRatio: 16 / 9,
-                    ),
-                  ),
-                ],
+              child: Container(
+                width: 300,
+                height: 200,
+                child: YoutubePlayer(
+                  controller: _controller,
+                  aspectRatio: 16 / 9,
+                ),
               ),
             ),
             SizedBox(height: 20),

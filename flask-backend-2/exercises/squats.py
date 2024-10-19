@@ -47,7 +47,6 @@ pose = md_pose.Pose(
 def update_squat():
     global count
     label.config(text=f"SQUAT: {count}")
-    
     label.after(1000, update_squat)
 
 # Function to update the squat count every second

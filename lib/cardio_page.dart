@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:camera/camera.dart';
 import 'package:youtube_player_iframe/youtube_player_iframe.dart';
+import 'package:http/http.dart' as http;
 
 class CardioPage extends StatefulWidget {
   @override
@@ -9,47 +9,37 @@ class CardioPage extends StatefulWidget {
 
 class _CardioPageState extends State<CardioPage> {
   final _controller = YoutubePlayerController();
-  List<CameraDescription> cameras = [];
-  CameraController? cameraController;
-  bool isCameraInitialized = false;
 
   // Video IDs
-  final List<String> videoIds = ["XPU9K9QM7ME", "auBLPXO8Fww", "L8fvypPrzzs", "S7HEm-fd534"]; // Add your video IDs here
+  final List<String> videoIds = ["XPU9K9QM7ME", "auBLPXO8Fww", "L8fvypPrzzs", "S7HEm-fd534"];
   int currentVideoIndex = 0;
 
-  @override 
-  void initState() { 
-    super.initState(); 
+  @override
+  void initState() {
+    super.initState();
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
-    _initializeCamera();
   }
 
-  Future<void> _initializeCamera() async {
-    cameras = await availableCameras();
-    cameraController = CameraController(cameras[0], ResolutionPreset.medium);
-    await cameraController?.initialize();
-    setState(() {
-      isCameraInitialized = true;
-    });
-  }
+  void _startVideo() async {
+    // Start the video first
+    _controller.playVideo();
 
-  void _startVideo() {
-    _controller.playVideo();  // Use playVideo instead of play
-   // _controller.setLoop(true); // Set the video to loop
+    // Then send the request to start the workout
+    await _sendStartWorkoutRequest();
   }
 
   void _stopVideo() {
-    _controller.pauseVideo();  // Use pauseVideo instead of pause
+    _controller.pauseVideo();
   }
 
   void _nextVideo() {
     if (currentVideoIndex < videoIds.length - 1) {
       currentVideoIndex++;
     } else {
-       _showWorkoutCompletedDialog(); // Show workout completed dialog
+      _showWorkoutCompletedDialog();
     }
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
-    _startVideo(); // Automatically start the next video
+    _startVideo();
   }
 
   void _showWorkoutCompletedDialog() {
@@ -63,7 +53,7 @@ class _CardioPageState extends State<CardioPage> {
             TextButton(
               onPressed: () {
                 Navigator.pop(context); // This will pop the dialog
-                Navigator.pop(context); // This will pop the StrengthTrainingPage and go back
+                Navigator.pop(context); // This will pop the CardioPage and go back
               },
               child: Text('Okay'),
             ),
@@ -73,11 +63,24 @@ class _CardioPageState extends State<CardioPage> {
     );
   }
 
-
+  Future<void> _sendStartWorkoutRequest() async {
+    final url = Uri.parse('http://10.81.100.141:5002/jumpingjacks'); // Replace with your Flask URL
+    try {
+      final response = await http.post(url);
+      if (response.statusCode == 200) {
+        // Handle the response if needed
+        print('Workout started successfully');
+      } else {
+        // Handle the error
+        print('Failed to start workout: ${response.body}');
+      }
+    } catch (error) {
+      print('Error sending request: $error');
+    }
+  }
 
   @override
   void dispose() {
-    cameraController?.dispose();
     _controller.close();
     super.dispose();
   }
@@ -92,26 +95,13 @@ class _CardioPageState extends State<CardioPage> {
         child: Column(
           children: [
             Expanded(
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
-                children: [
-                  Container(
-                    width: 160,
-                    height: 120,
-                    child: isCameraInitialized
-                        ? CameraPreview(cameraController!)
-                        : Center(child: CircularProgressIndicator()),
-                  ),
-                  SizedBox(width: 20),
-                  Container(
-                    width: 300,
-                    height: 200,
-                    child: YoutubePlayer(
-                      controller: _controller,
-                      aspectRatio: 16 / 9,
-                    ),
-                  ),
-                ],
+              child: Container(
+                width: 300,
+                height: 200,
+                child: YoutubePlayer(
+                  controller: _controller,
+                  aspectRatio: 16 / 9,
+                ),
               ),
             ),
             SizedBox(height: 20),

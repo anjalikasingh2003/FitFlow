@@ -47,7 +47,6 @@ pose = md_pose.Pose(
 def update_pushup():
     global count
     label.config(text=f"PUSHUP: {count}")
-   
     label.after(1000, update_pushup)
 
 # Function to update the pushup count every second
