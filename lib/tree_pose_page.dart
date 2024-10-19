@@ -7,13 +7,28 @@ class TreePosePage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Tree Pose'),
+       // title: Text('Tree Pose'),
+        flexibleSpace: Center(
+        child: Text(
+          'TREE POSE',
+           style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontWeight: FontWeight.w600, 
+            fontSize: 28,
+            ),
+        ),
       ),
-      body: Center(
+        backgroundColor: Color(0xFF006400), // Set AppBar background to black
+      ),
+      body: Container(
+         color: Colors.black, 
+         child: Center(
         child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             // Display the image with adjusted size
+            SizedBox(height: 200),
             Flexible(
               child: Image.asset(
                 'assets/img_tree_pose.jpg', // Ensure the path is correct
@@ -29,9 +44,22 @@ class TreePosePage extends StatelessWidget {
               onPressed: () {
                 _runTreePoseScript();
               },
-              child: Text('Start'),
+              child: Text(
+                'Start',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, // Set text to bold
+                    fontSize: 18,
+                  ),
+                ),
+               style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // Set button background to white
+                  foregroundColor: Colors.black, // Set button text color to black
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                  
+                ),
             ),
           ],
+        ),
         ),
       ),
     );

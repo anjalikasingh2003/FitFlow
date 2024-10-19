@@ -8,49 +8,100 @@ class YogaPage extends StatelessWidget {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Yoga'),
+        flexibleSpace: Center(
+        child: Text(
+          'YOGA',
+           style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontWeight: FontWeight.w600, 
+            fontSize: 28,
+            ),
+        ),
       ),
-      body: Center(
-        child: Column(
-          mainAxisAlignment: MainAxisAlignment.center,
-          children: [
-            Text(
-              'Choose Yoga Pose',
-              style: TextStyle(fontSize: 24),
-            ),
-            SizedBox(height: 20), // Space between text and buttons
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TreePosePage()),
-                );
-              },
-              child: Text('Tree Pose'),
-            ),
-            SizedBox(height: 10), // Space between buttons
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => TrianglePage()),
-                );
-              },
-              child: Text('Triangle'),
-            ),
-            SizedBox(height: 10), // Space between buttons
-            ElevatedButton(
-              onPressed: () {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => PlankPage()),
-                );
-              },
-              child: Text('Plank'),
-            ),
-          ],
+        backgroundColor: Color(0xFF006400), // Set AppBar background to black
+       
+      ),
+      body: Container(
+        color: Colors.black, // Set the background of the body to black
+        child: Center(
+          child: Column(
+            mainAxisAlignment: MainAxisAlignment.start,
+            children: [
+              SizedBox(height: 200),
+              Text(
+                'Choose Yoga Pose',
+                style: TextStyle(
+                  fontSize: 24,
+                   color: Colors.white
+                   
+                   ), // Set text color to white
+              ),
+              SizedBox(height: 50), // Space between text and buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TreePosePage()),
+                  );
+                },
+                child: Text(
+                  'Tree Pose',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, // Set text to bold
+                    fontSize: 18,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // Set button background to white
+                  foregroundColor: Colors.black, // Set button text color to black
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                ),
+              ),
+              SizedBox(height: 30), // Space between buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => TrianglePage()),
+                  );
+                },
+                child: Text('Triangle',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, // Set text to bold
+                    fontSize: 18,
+                  ),),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // Set button background to white
+                  foregroundColor: Colors.black, // Set button text color to black
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                ),
+              ),
+              SizedBox(height: 30), // Space between buttons
+              ElevatedButton(
+                onPressed: () {
+                  Navigator.push(
+                    context,
+                    MaterialPageRoute(builder: (context) => PlankPage()),
+                  );
+                },
+                child: Text('Plank',
+                style: TextStyle(
+                    fontWeight: FontWeight.bold, // Set text to bold
+                    fontSize: 18,
+                  ),
+                ),
+                style: ElevatedButton.styleFrom(
+                  backgroundColor: Colors.white, // Set button background to white
+                  foregroundColor: Colors.black, // Set button text color to black
+                  padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
+                ),
+              ),
+            ],
+          ),
         ),
       ),
     );
   }
 }
+

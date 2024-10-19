@@ -98,9 +98,21 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        title: Text('Strength Training Workouts'),
+       flexibleSpace: Center(
+        child: Text(
+          'STRENGTH TRAINING',
+           style: TextStyle(
+            color: Colors.white,
+            letterSpacing: 1.5,
+            fontWeight: FontWeight.w600, 
+            fontSize: 28,
+            ),
+        ),
       ),
-      body: Center(
+        backgroundColor: Color(0xFF006400),
+      ),
+      body: Container(
+        color: Colors.black,
         child: Column(
           children: [
             Expanded(
@@ -119,17 +131,29 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
               children: [
                 ElevatedButton(
                   onPressed: _startVideo,
-                  child: Text('Start'),
+                  child: Text('Start',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: _stopVideo,
-                  child: Text('Stop'),
+                  child: Text('Stop',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ),
                 ),
                 SizedBox(width: 10),
                 ElevatedButton(
                   onPressed: _nextVideo,
-                  child: Text('Next'),
+                  child: Text('Next',
+                  style: TextStyle(
+                    fontWeight: FontWeight.bold,
+                  ),
+                  ),
                 ),
               ],
             ),

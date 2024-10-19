@@ -233,34 +233,37 @@ class ProfiScreen extends StatelessWidget {
                 color: Colors.black.withOpacity(0.5), // Semi-transparent background
               ),
               child: Text(
-                'Welcome to FitFlow',
-                style: GoogleFonts.pacifico( // Using a fancy font
-                  fontSize: 28,
-                  color: Colors.white,
-                ),
+                'WELCOME TO FITNFLOW',
+                //letterSpacing:0.3,
+                style: Theme.of(context).textTheme.displaySmall?.copyWith(
+                    color: Colors.white, // White text color for visibility
+                    fontWeight: FontWeight.bold,
+                    fontSize: 24,
+                    letterSpacing: 3.5,
+                  ),
               ),
             ),
-            SizedBox(height: 250), // Increase spacing below the welcome text
+            SizedBox(height: 350), // Increase spacing below the welcome text
 
             // Add Spacer to push content down
             //Spacer(), // This spacer pushes the following content down
 
             // Select an Option text
-            Text(
-              'Select an Option',
-              style: TextStyle(
-                fontSize: 24, // Font size for the "Select an Option"
-                fontWeight: FontWeight.bold,
-                color: Colors.white,
-                shadows: [
-                  Shadow(
-                    blurRadius: 10.0,
-                    color: Colors.black.withOpacity(0.7),
-                    offset: Offset(5.0, 5.0),
-                  ),
-                ],
-              ),
-            ),
+            // Text(
+            //   'Select an Option',
+            //   style: TextStyle(
+            //     fontSize: 24, // Font size for the "Select an Option"
+            //     fontWeight: FontWeight.bold,
+            //     color: Colors.white,
+            //     shadows: [
+            //       Shadow(
+            //         blurRadius: 10.0,
+            //         color: Colors.black.withOpacity(0.7),
+            //         offset: Offset(5.0, 5.0),
+            //       ),
+            //     ],
+            //   ),
+            // ),
             SizedBox(height: 40), // Spacing between "Select an Option" and buttons
             
             // Workout Button
@@ -283,8 +286,13 @@ class ProfiScreen extends StatelessWidget {
                 overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(1)),
               ),
               child: Text(
-                'Workout',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
+                'WORKOUT',
+                style: TextStyle(
+                    fontSize: 16, 
+                    fontWeight: FontWeight.w600, 
+                    color: Colors.white,
+                    letterSpacing: 2.5,
+                    ),
               ),
             ),
             SizedBox(height: 20), // Spacing between Workout and Yoga buttons
@@ -309,8 +317,8 @@ class ProfiScreen extends StatelessWidget {
                 overlayColor: MaterialStateProperty.all(Colors.black.withOpacity(1)),
               ),
               child: Text(
-                'Yoga',
-                style: TextStyle(fontSize: 20, fontWeight: FontWeight.w600, color: Colors.white),
+                'YOGA',
+                style: TextStyle(fontSize: 16, fontWeight: FontWeight.w600, color: Colors.white, letterSpacing: 2.5,),
               ),
             ),
             SizedBox(height: 40), // Spacing before sign-out button
