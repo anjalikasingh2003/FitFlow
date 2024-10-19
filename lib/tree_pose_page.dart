@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'dart:io';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class TreePosePage extends StatelessWidget {
   @override
@@ -33,16 +34,14 @@ class TreePosePage extends StatelessWidget {
   // Function to run the Tree_pose.py script
   void _runTreePoseScript() async {
     try {
-      // Make sure the path to the script is correct
-      var result = await Process.run('python', ['yoga_poses/Tree_pose.py']);
+      final response = await http.get(Uri.parse('http://10.81.100.141:5000/run_tree_pose'));
       
-      // Handle the output of the script
-      print(result.stdout);
-      print(result.stderr);
-
-      if (result.exitCode != 0) {
-        // If the script didn't run successfully, print the error
-        print('Error running script: ${result.stderr}');
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        print('STDOUT: ${jsonResponse['stdout']}');
+        print('STDERR: ${jsonResponse['stderr']}');
+      } else {
+        print('Error: ${response.body}');
       }
     } catch (e) {
       print('Error running script: $e');
