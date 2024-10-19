@@ -13,9 +13,15 @@ class TreePosePage extends StatelessWidget {
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            // Display the image
-            Image.asset('assets/img_tree_pose.png'), // Ensure the path is correct
-
+            // Display the image with adjusted size
+            Flexible(
+              child: Image.asset(
+                'assets/img_tree_pose.jpg', // Ensure the path is correct
+                fit: BoxFit.contain, // This scales the image to fit within its bounds
+                height: 250, // Set a fixed height or remove this to scale dynamically
+              ),
+            ),
+            
             SizedBox(height: 20), // Space between image and button
 
             // Display the Start button
@@ -34,7 +40,7 @@ class TreePosePage extends StatelessWidget {
   // Function to run the Tree_pose.py script
   void _runTreePoseScript() async {
     try {
-      final response = await http.get(Uri.parse('http://10.81.100.141:5000/run_tree_pose'));
+      final response = await http.get(Uri.parse('http://10.81.100.141:5000/Tree_pose'));
       
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);
