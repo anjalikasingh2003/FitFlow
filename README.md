@@ -1,16 +1,28 @@
-# fit_n_flow
+# Fit N Flow
 
-A new Flutter project.
+## Project description
+A fitness app that provides user with personalized workout selection, and offers the flexibility to choose between workouts and yoga sessions, while accurately counting your exercise repetitions and timing your poses in real time. <br/>
+Used Computer Vision to accurately count the repetitions of exercise in realtime.
+## Setup Instructions
+1. Ensure that you have latest version of Python and Flutter installed on your device.
+2. Clone the repository
+   ```
+   git clone https://github.com/anjalikasingh2003/FitFlow.git
+   ```
+3. Install the following python libraries
+   ```
+   pip install mediapipe
+   pip install opencv
+   pip install tkinter
+   pip install numpy
+   ```
+4. Run the following command to install dependencies
+   ```
+   flutter pub get
+   ```
+5. Run the application
+   ```
+   flutter run
+   ```
 
-## Getting Started
 
-This project is a starting point for a Flutter application.
-
-A few resources to get you started if this is your first Flutter project:
-
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
-
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
