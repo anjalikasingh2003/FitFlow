@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'tree_pose_page.dart'; // Import the tree pose page
+import 'triangle_page.dart'; // Import the triangle pose page
+import 'plank_page.dart'; // Import the plank page
 
 class YogaPage extends StatelessWidget {
   @override
@@ -8,9 +11,44 @@ class YogaPage extends StatelessWidget {
         title: Text('Yoga'),
       ),
       body: Center(
-        child: Text(
-          'Workout plans will be displayed here.',
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            Text(
+              'Choose Yoga Pose',
+              style: TextStyle(fontSize: 24),
+            ),
+            SizedBox(height: 20), // Space between text and buttons
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TreePosePage()),
+                );
+              },
+              child: Text('Tree Pose'),
+            ),
+            SizedBox(height: 10), // Space between buttons
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => TrianglePage()),
+                );
+              },
+              child: Text('Triangle'),
+            ),
+            SizedBox(height: 10), // Space between buttons
+            ElevatedButton(
+              onPressed: () {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => PlankPage()),
+                );
+              },
+              child: Text('Plank'),
+            ),
+          ],
         ),
       ),
     );
