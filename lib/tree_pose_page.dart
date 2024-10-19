@@ -1,4 +1,6 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class TreePosePage extends StatelessWidget {
   @override
@@ -8,11 +10,47 @@ class TreePosePage extends StatelessWidget {
         title: Text('Tree Pose'),
       ),
       body: Center(
-        child: Text(
-          'Information about Tree Pose will be displayed here.',
-          style: TextStyle(fontSize: 24),
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.center,
+          children: [
+            // Display the image with adjusted size
+            Flexible(
+              child: Image.asset(
+                'assets/img_tree_pose.jpg', // Ensure the path is correct
+                fit: BoxFit.contain, // This scales the image to fit within its bounds
+                height: 250, // Set a fixed height or remove this to scale dynamically
+              ),
+            ),
+            
+            SizedBox(height: 20), // Space between image and button
+
+            // Display the Start button
+            ElevatedButton(
+              onPressed: () {
+                _runTreePoseScript();
+              },
+              child: Text('Start'),
+            ),
+          ],
         ),
       ),
     );
+  }
+
+  // Function to run the Tree_pose.py script
+  void _runTreePoseScript() async {
+    try {
+      final response = await http.get(Uri.parse('http://10.81.100.141:5000/Tree_pose'));
+      
+      if (response.statusCode == 200) {
+        final jsonResponse = jsonDecode(response.body);
+        print('STDOUT: ${jsonResponse['stdout']}');
+        print('STDERR: ${jsonResponse['stderr']}');
+      } else {
+        print('Error: ${response.body}');
+      }
+    } catch (e) {
+      print('Error running script: $e');
+    }
   }
 }
