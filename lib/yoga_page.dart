@@ -19,7 +19,7 @@ class YogaPage extends StatelessWidget {
             ),
         ),
       ),
-        backgroundColor: Color(0xFF006400), // Set AppBar background to black
+        backgroundColor: Color.fromARGB(255, 77, 0, 80),// Set AppBar background to black
        
       ),
       body: Container(

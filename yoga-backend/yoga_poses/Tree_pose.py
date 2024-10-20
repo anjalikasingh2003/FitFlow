@@ -64,8 +64,8 @@ while cap.isOpened() and not stop_program:
         # Correct pose condition: based on angles and positions of landmarks
         if ((landmarks_list[23][1] < landmarks_list[30][1] < landmarks_list[25][1] or landmarks_list[24][1] < landmarks_list[29][1] < landmarks_list[26][1])
             and diff <= 0.3
-            and (125 <= ang_l <= 160)
-            and (125 <= ang_r <= 160)):
+            and (120 <= ang_l <= 165)
+            and (120 <= ang_r <= 165)):
             msg = "Correct Pose"
 
             # Increment count every second if the pose is correct
@@ -76,9 +76,9 @@ while cap.isOpened() and not stop_program:
             msg = "fix pose"
         if (landmarks_list[23][1] < landmarks_list[30][1] < landmarks_list[25][1] or landmarks_list[24][1] < landmarks_list[29][1] < landmarks_list[26][1]) == False:
             msg = msg + " | lift up your either foot"
-        if (125 <= ang_l <= 160) == False:
+        if (120 <= ang_l <= 165) == False:
             msg = msg + " | straighten your left hand"
-        if (125 <= ang_r <= 160) == False:
+        if (120 <= ang_r <= 165) == False:
             msg = msg + " | straighten your right hand"
         
         

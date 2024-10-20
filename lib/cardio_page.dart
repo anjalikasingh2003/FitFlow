@@ -20,6 +20,7 @@ class _CardioPageState extends State<CardioPage> {
     _controller.loadVideoById(videoId: videoIds[currentVideoIndex]);
   }
 
+
   void _startVideo() async {
     // Start the video first
     _controller.playVideo();

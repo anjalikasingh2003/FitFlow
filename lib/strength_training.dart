@@ -109,7 +109,7 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
             ),
         ),
       ),
-        backgroundColor: Color(0xFF006400),
+        backgroundColor: Color.fromARGB(255, 77, 0, 80),
       ),
       body: Container(
         color: Colors.black,

@@ -19,7 +19,7 @@ class TreePosePage extends StatelessWidget {
             ),
         ),
       ),
-        backgroundColor: Color(0xFF006400), // Set AppBar background to black
+        backgroundColor: Color.fromARGB(255, 77, 0, 80), // Set AppBar background to black
       ),
       body: Container(
          color: Colors.black, 
@@ -68,7 +68,7 @@ class TreePosePage extends StatelessWidget {
   // Function to run the Tree_pose.py script
   void _runTreePoseScript() async {
     try {
-      final response = await http.get(Uri.parse('http://10.81.100.141:5000/Tree_pose'));
+      final response = await http.get(Uri.parse('http://10.81.100.141:5004/Tree_pose'));
       
       if (response.statusCode == 200) {
         final jsonResponse = jsonDecode(response.body);

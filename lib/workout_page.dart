@@ -20,7 +20,7 @@ class WorkoutPage extends StatelessWidget {
             ),
         ),
         ),
-        backgroundColor: Color(0xFF006400),
+        backgroundColor: Color.fromARGB(255, 77, 0, 80),
      ),
       body: Container(
          color: Colors.black, // Set the background of the body to black
@@ -52,7 +52,7 @@ class WorkoutPage extends StatelessWidget {
               ),
               style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.white, // Set button background to white
-                  foregroundColor: Colors.black, // Set button text color to black
+                  foregroundColor: Colors.black, 
                   padding: EdgeInsets.symmetric(horizontal: 40, vertical: 20),
                 ),
             ),
@@ -125,4 +125,5 @@ class WorkoutPage extends StatelessWidget {
       ),
     );
   }
+  
 }
