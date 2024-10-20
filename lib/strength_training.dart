@@ -68,10 +68,10 @@ class _StrengthtrainingPageState extends State<StrengthtrainingPage> {
     String url;
     if (currentVideoIndex == 0) {
       // For the first video (Pushups)
-      url = 'http://10.81.100.141:5002/pushups'; // Replace with your Flask URL for pushups
+      url = 'http:// 10.81.32.74:5002/pushups'; // Replace with your Flask URL for pushups
     } else {
       // For the subsequent videos (Squats)
-      url = 'http://10.81.100.141:5002/squats'; // Replace with your Flask URL for squats
+      url = 'http:// 10.81.32.74:5002/squats'; // Replace with your Flask URL for squats
     }
 
     try {

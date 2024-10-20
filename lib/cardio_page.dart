@@ -65,7 +65,7 @@ class _CardioPageState extends State<CardioPage> {
   }
 
   Future<void> _sendStartWorkoutRequest() async {
-    final url = Uri.parse('http://10.81.100.141:5002/jumpingjacks'); // Replace with your Flask URL
+    final url = Uri.parse('http://10.81.32.74:5002/jumpingjacks'); // Replace with your Flask URL
     try {
       final response = await http.post(url);
       if (response.statusCode == 200) {

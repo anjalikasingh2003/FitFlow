@@ -9,19 +9,19 @@ class FullWorkoutPage extends StatefulWidget {
 }
 
 class _FullWorkoutPageState extends State<FullWorkoutPage> {
-  String message = "You have to do 10 Pushups, 10 Jumping Jacks, 10 Squats";
+  String message = "You have to do 10 Jumping Jacks, 10 Pushups, 10 Squats";
   bool isWorkoutStarted = false; // Track whether workout has started
 
   @override
   void initState() {
     super.initState();
     // Set a timer to hide the initial message after 5 seconds
-    Timer(Duration(seconds: 5), () {
+    Timer(Duration(seconds: 2), () {
       setState(() {
         message = "Get ready to start your workout!";
       });
       // Start the workout sequence after 3 seconds
-      Timer(Duration(seconds: 3), () {
+      Timer(Duration(seconds: 2), () {
         setState(() {
           isWorkoutStarted = true;
           message = "Starting exercises...";
@@ -35,7 +35,7 @@ class _FullWorkoutPageState extends State<FullWorkoutPage> {
   Future<void> executeExercises() async {
     try {
       // Start Jumping Jacks
-      var response = await http.get(Uri.parse('http://10.81.100.141:5001/jumpingjacks'));
+      var response = await http.get(Uri.parse('http:// 10.81.32.74:5001/jumpingjacks'));
       if (response.statusCode == 200) {
         print("Jumping Jacks started: ${response.body}");
         // Wait for Jumping Jacks to complete
@@ -45,7 +45,7 @@ class _FullWorkoutPageState extends State<FullWorkoutPage> {
       }
 
       // Start Pushups
-      response = await http.get(Uri.parse('http://10.81.100.141:5001/pushups'));
+      response = await http.get(Uri.parse('http:// 10.81.32.74:5001/pushups'));
       if (response.statusCode == 200) {
         print("Pushups started: ${response.body}");
         // Optionally wait for Pushups to complete
@@ -55,7 +55,7 @@ class _FullWorkoutPageState extends State<FullWorkoutPage> {
       }
 
       // Start Squats
-      response = await http.get(Uri.parse('http://10.81.100.141:5001/squats'));
+      response = await http.get(Uri.parse('http:// 10.81.32.74:5001/squats'));
       if (response.statusCode == 200) {
         print("Squats started: ${response.body}");
         // Wait for Squats to complete

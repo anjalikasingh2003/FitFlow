@@ -210,7 +210,7 @@ class _ChatbotWidgetState extends State<ChatbotWidget> {
       });
 
       final response = await http.post(
-        Uri.parse('http://127.0.0.1:5000/chatbot'), // Your Flask API URL
+        Uri.parse('http://10.81.32.74:5000/chatbot'), // Your Flask API URL 127.0.0.1
         headers: {'Content-Type': 'application/json'},
         body: json.encode({'height': _height, 'weight': _weight, 'query': _goal}),
       );
